@@ -1,0 +1,11 @@
+POST http://localhost:8000/products
+Content-Type: application/json
+
+{
+  "name": "My Product",
+  "price": 100
+}
+
+### GET request with a header
+GET http://localhost:8000/products
+Accept: application/json

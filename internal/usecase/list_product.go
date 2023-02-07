@@ -8,28 +8,29 @@ type ListProductOutputDto struct {
 	Price float64
 }
 
-type ListProductUsecase struct {
+type ListProductUseCase struct {
 	ProductRepository entity.ProductRepository
 }
 
-func NewListProductUsecase(productRepository entity.ProductRepository) *ListProductUsecase {
-	return &ListProductUsecase{
+func NewListProductUseCase(productRepository entity.ProductRepository) *ListProductUseCase {
+	return &ListProductUseCase{
 		ProductRepository: productRepository,
 	}
 }
 
-func (u *ListProductUsecase) Execute() ([]*ListProductOutputDto, error) {
+func (u *ListProductUseCase) Execute() ([]*ListProductOutputDto, error) {
 	products, err := u.ProductRepository.FindAll()
 	if err != nil {
 		return nil, err
 	}
-	var output []*ListProductOutputDto
+
+	var productsOutput []*ListProductOutputDto
 	for _, product := range products {
-		output = append(output, &ListProductOutputDto{
+		productsOutput = append(productsOutput, &ListProductOutputDto{
 			ID:    product.ID,
 			Name:  product.Name,
 			Price: product.Price,
 		})
 	}
-	return output, nil
+	return productsOutput, nil
 }

@@ -13,19 +13,20 @@ type CreateProductOutputDto struct {
 	Price float64
 }
 
-type CreateProductUsecase struct {
+type CreateProductUseCase struct {
 	ProductRepository entity.ProductRepository
 }
 
-func NewCreateProductUsecase(productRepository entity.ProductRepository) *CreateProductUsecase {
-	return &CreateProductUsecase{
+func NewCreateProductUseCase(productRepository entity.ProductRepository) *CreateProductUseCase {
+	return &CreateProductUseCase{
 		ProductRepository: productRepository,
 	}
 }
 
-func (u *CreateProductUsecase) Execute(input CreateProductInputDto) (*CreateProductOutputDto, error) {
+func (u *CreateProductUseCase) Execute(input CreateProductInputDto) (*CreateProductOutputDto, error) {
 	product := entity.NewProduct(input.Name, input.Price)
-	if err := u.ProductRepository.Create(product); err != nil {
+	err := u.ProductRepository.Create(product)
+	if err != nil {
 		return nil, err
 	}
 	return &CreateProductOutputDto{

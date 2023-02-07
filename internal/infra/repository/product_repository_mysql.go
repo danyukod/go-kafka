@@ -14,43 +14,29 @@ func NewProductRepositoryMysql(db *sql.DB) *ProductRepositoryMysql {
 }
 
 func (r *ProductRepositoryMysql) Create(product *entity.Product) error {
-	stmt, err := r.DB.Prepare("INSERT INTO products (id, name, price) VALUES (?, ?, ?)")
-
+	_, err := r.DB.Exec("Insert into products (id, name, price) values(?,?,?)",
+		product.ID, product.Name, product.Price)
 	if err != nil {
 		return err
 	}
-
-	_, err = stmt.Exec(product.ID, product.Name, product.Price)
-
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
 func (r *ProductRepositoryMysql) FindAll() ([]*entity.Product, error) {
-	rows, err := r.DB.Query("SELECT id, name, price FROM products")
-
+	rows, err := r.DB.Query("select id, name, price from products")
 	if err != nil {
 		return nil, err
 	}
-
 	defer rows.Close()
 
 	var products []*entity.Product
-
 	for rows.Next() {
-		product := entity.Product{}
-
+		var product entity.Product
 		err = rows.Scan(&product.ID, &product.Name, &product.Price)
-
 		if err != nil {
 			return nil, err
 		}
-
 		products = append(products, &product)
 	}
-
 	return products, nil
 }

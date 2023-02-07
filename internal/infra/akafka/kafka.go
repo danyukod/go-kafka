@@ -2,7 +2,7 @@ package akafka
 
 import "github.com/confluentinc/confluent-kafka-go/kafka"
 
-func Consumer(topics []string, servers string, msgChan chan *kafka.Message) error {
+func Consume(topics []string, servers string, msgChan chan *kafka.Message) error {
 	kafkaConsumer, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": servers,
 		"group.id":          "danyukod-group",
